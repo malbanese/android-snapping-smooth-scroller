@@ -1,6 +1,7 @@
 package com.malba.sandbox;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
@@ -26,10 +27,23 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     public static final int DIRECTION_Y = 1;
 
     /**
+     * Identifier to identify when the start time of the snapping interpolator has not yet happened.
+     */
+    public static final long NO_START_SNAP_TIME = -1;
+
+    /**
      * The options used to calculate snapping parameters.
      */
     private SnappingOptions mOptions;
 
+    /**
+     * Keep track of when we started snapping the child to the parent.
+     */
+    private long mSnapStartTime = NO_START_SNAP_TIME;
+
+    /**
+     * @param context The context in which this smooth scroller belongs to.
+     */
     public SnappingSmoothScroller(Context context) {
         super(context);
     }
@@ -174,8 +188,25 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         final int dy = calculateSnappingDistance(targetView, DIRECTION_Y);
 
         if(dx != 0 || dy != 0) {
+            mSnapStartTime = System.currentTimeMillis();
             action.update(-dx, -dy, 500, mOptions.mTargetFoundInterpolator);
         }
+    }
+
+    /**
+     * Attempts to calculate the current animation percentage.
+     * @return The current animation percentage [0 - 1.0].
+     */
+    public float getAnimationPercentage() {
+        if(NO_START_SNAP_TIME != mSnapStartTime) {
+            final long elapsedTime = System.currentTimeMillis() - mSnapStartTime;
+
+            if(elapsedTime < mOptions.mSnapDuration) {
+                return elapsedTime / mOptions.mSnapDuration;
+            }
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -193,6 +224,9 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
 
         // The interpolator that will be used during the target found phase
         private Interpolator mTargetFoundInterpolator = new DecelerateInterpolator();
+
+        // The amount of time snapping a child in place will take.
+        private int mSnapDuration = 500;
 
         /**
          * @param msPerInch The number of MS it will take to animate over one inch of screen space,
@@ -252,7 +286,16 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
          *                                position's view is attached to the RecyclerView.
          */
         public void setTargetFoundInterpolator(Interpolator targetFoundInterpolator) {
-            this.mTargetFoundInterpolator = targetFoundInterpolator;
+            mTargetFoundInterpolator = targetFoundInterpolator;
+        }
+
+        /**
+         * Sets the amount of time it will take for a child to snap in place, once it has been
+         * brought into view of the parent.
+         * @param snapDuration The time the child will take to snap in milliseconds.
+         */
+        public void setSnapDuration(int snapDuration) {
+            mSnapDuration = snapDuration;
         }
     }
 }
