@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-snapping-smooth-scroller.iml" filepath="$PROJECT_DIR$/android-snapping-smooth-scroller.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/espresso/espresso.iml" filepath="$PROJECT_DIR$/espresso/espresso.iml" />
+      <module fileurl="file://$PROJECT_DIR$/snappingsmoothscroller/snappingsmoothscroller.iml" filepath="$PROJECT_DIR$/snappingsmoothscroller/snappingsmoothscroller.iml" />
     </modules>
   </component>
 </project>
