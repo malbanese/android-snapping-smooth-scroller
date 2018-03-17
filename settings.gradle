@@ -1,1 +1,1 @@
-include ':espresso', ':snappingsmoothscroller'
+include ':example', ':snappingsmoothscroller'

@@ -14,6 +14,7 @@ import android.view.animation.Interpolator;
  * The primary feature that differentiates it, is the ability to specify snapping points on both
  * the child, and the layout manager.
  */
+@SuppressWarnings("WeakerAccess")
 public class SnappingSmoothScroller extends LinearSmoothScroller {
     /**
      * Enumeration value denoting a calculation in the horizontal direction.
@@ -41,22 +42,31 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     private long mSnapStartTime = NO_START_SNAP_TIME;
 
     /**
+     * The calculated milliseconds per pixels that this will scroll when searching.
+     */
+    private float mCalculatedMillisPerPx;
+
+    /**
+     * @param options The options used to calculate snapping points.
      * @param context The context in which this smooth scroller belongs to.
      */
-    public SnappingSmoothScroller(Context context) {
+    public SnappingSmoothScroller(SnappingOptions options, Context context) {
         super(context);
+        setSnappingOptions(options, context);
     }
 
     /**
-     * Sets the snapping options which are used to calculate snapping points.
+     * Sets the snapping options associated with this smooth scroller.
      * @param options The options used to calculate snapping points.
+     * @param context The context in which this smooth scroller belongs to.
      */
-    public void setSnappingOptions(SnappingOptions options) {
+    public void setSnappingOptions(SnappingOptions options, Context context) {
         mOptions = options;
+        mCalculatedMillisPerPx = calculateSpeedPerPixel(context.getResources().getDisplayMetrics());
     }
 
     /**
-     * Calculates a snapping location, given the correct parameters.
+     * Calculates a snapping location.
      * @param start The starting point.
      * @param end The ending point.
      * @param snapLocation The location which should be snapped to.
@@ -104,7 +114,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     }
 
     /**
-     * Calculates the snapping location for the layout manager.
+     * Calculates the start and end snapping positions of the parent RecyclerView.
      * @param snapResult The array to save the result to.
      * @param direction The direction the calculations should be made in. DIRECTION_X, DIRECTION_Y.
      * @return snapResult.
@@ -134,7 +144,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     }
 
     /**
-     * Calculates the snapping distance that should be scrolled to snap the child into place.
+     * Calculates the snapping distance that should be scrolled, inorder to snap the child into place.
      * @param child The child we are trying to snap into place.
      * @param direction The scrolling direction.
      * @return The distance that should be translated for a snap to occur.
@@ -155,12 +165,12 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
                         (int) (parentSnap[1] - childSnap[1])
                 };
 
-                // We can snap at 0, but not 1.
+                // Our item is to the left of both positions, snap to the left.
                 if (snapDistance[0] > 0 && snapDistance[1] > 0) {
                     return snapDistance[0];
                 }
 
-                // We can snap at 1, but not 0.
+                // Our item is to the right of both positions, snap to the right.
                 if (snapDistance[0] < 0 && snapDistance[1] < 0) {
                     return snapDistance[1];
                 }
@@ -176,11 +186,29 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         return 0;
     }
 
+    /**
+     * Overridden to calculate the speed per pixel using our options object.
+     */
     @Override
     protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+        if(mOptions == null) {
+            return super.calculateSpeedPerPixel(displayMetrics);
+        }
+
         return mOptions.mMSPerInch / displayMetrics.densityDpi;
     }
 
+    /**
+     * Overridden to use our options specific scroll speed.
+     */
+    @Override
+    protected int calculateTimeForScrolling(int dx) {
+        return (int) Math.ceil(Math.abs(dx) * mCalculatedMillisPerPx);
+    }
+
+    /**
+     * Overridden to snap into place using our options object.
+     */
     @Override
     protected void onTargetFound(View targetView, RecyclerView.State state, Action action) {
         final int dx = calculateSnappingDistance(targetView, DIRECTION_X);
@@ -216,10 +244,10 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         private float mMSPerInch = 25.0f;
 
         // The location on the child which will snap to the parent/
-        private float[] mChildSnap = { 0.50f, 0.50f };
+        private final float[] mChildSnap = { 0.50f, 0.50f };
 
         // The location on the parent which will snap to the child.
-        private float[] mParentSnap = { 0.25f, 0.75f };
+        private final float[] mParentSnap = { 0.25f, 0.75f };
 
         // The interpolator that will be used during the target found phase
         private Interpolator mTargetFoundInterpolator = new DecelerateInterpolator();

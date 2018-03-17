@@ -6,8 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.malba.sandbox.adapter.VerticalMovieAdapter;
-import com.malba.sandbox.model.Movie;
+import com.malba.sandbox.model.SimplePoster;
 import com.malba.widget.SnappingLinearLayoutManager;
+import com.malba.widget.SnappingSmoothScroller;
 
 import java.util.ArrayList;
 
@@ -22,17 +23,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         recyclerView.setAdapter(adapter);
 
-        LinearLayoutManager layoutManager = new SnappingLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        SnappingLinearLayoutManager layoutManager = new SnappingLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setSnappingOptions(new SnappingSmoothScroller.SnappingOptions());
         recyclerView.setLayoutManager( layoutManager );
     }
 
-    public ArrayList<Movie> getMockData(int count) {
-        ArrayList<Movie> a_Movie = new ArrayList<>(count);
+    public ArrayList<SimplePoster> getMockData(int count) {
+        ArrayList<SimplePoster> a_SimplePoster = new ArrayList<>(count);
 
         for(int i=0; i < count; i++) {
-            a_Movie.add( new Movie("Generic Movie " + i) );
+            a_SimplePoster.add( new SimplePoster("Generic SimplePoster " + i) );
         }
 
-        return a_Movie;
+        return a_SimplePoster;
     }
 }

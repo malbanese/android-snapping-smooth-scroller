@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.malba.sandbox.R;
-import com.malba.sandbox.databinding.MovieRowBinding;
-import com.malba.sandbox.model.Movie;
+import com.malba.sandbox.databinding.MoviePosterBinding;
+import com.malba.sandbox.model.SimplePoster;
 
 import java.util.ArrayList;
 
 public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdapter.ViewHolder> {
-    private ArrayList<Movie> a_Movie = new ArrayList<>();
+    private ArrayList<SimplePoster> a_SimplePoster = new ArrayList<>();
 
-    public VerticalMovieAdapter(ArrayList<Movie> a_Movie) {
-        this.a_Movie = a_Movie;
+    public VerticalMovieAdapter(ArrayList<SimplePoster> a_SimplePoster) {
+        this.a_SimplePoster = a_SimplePoster;
     }
 
     private RecyclerView mRecyclerView;
@@ -28,30 +28,29 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        MovieRowBinding binding;
+        MoviePosterBinding binding;
 
-        public ViewHolder(final MovieRowBinding binding) {
+        public ViewHolder(final MoviePosterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             this.binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    mRecyclerView.smoothScrollToPosition( mRecyclerView.getChildAdapterPosition(binding.getRoot()) );
                     mRecyclerView.smoothScrollToPosition(20);
                 }
             });
         }
 
-        public void setMovie(Movie movie) {
-            binding.setMovie(movie);
+        public void setMovie(SimplePoster simplePoster) {
+            binding.setSimplePoster(simplePoster);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MovieRowBinding binding = DataBindingUtil.inflate(
+        MoviePosterBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.movie_row, parent,
+                R.layout.movie_poster, parent,
                 false);
 
         return new ViewHolder(binding);
@@ -60,11 +59,11 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setMovie( a_Movie.get(position) );
+        holder.setMovie( a_SimplePoster.get(position) );
     }
 
     @Override
     public int getItemCount() {
-        return a_Movie.size();
+        return a_SimplePoster.size();
     }
 }

@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="movie"
-            type="com.malba.sandbox.model.Movie"/>
+            name="simplePoster"
+            type="com.malba.sandbox.model.SimplePoster"/>
     </data>
 
     <LinearLayout
@@ -20,6 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@{movie.title}" />
+            android:text="@{simplePoster.title}" />
     </LinearLayout>
 </layout>
