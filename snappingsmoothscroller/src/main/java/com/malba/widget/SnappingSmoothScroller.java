@@ -72,7 +72,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
      * @param snapLocation The location which should be snapped to.
      * @return The absolute snapping location.
      */
-    public int calculateSnapLocation(int start, int end, float snapLocation) {
+    private int calculateSnapLocation(int start, int end, float snapLocation) {
         if(Math.abs(snapLocation) <= 1.0f) {
             return Math.round(start + (end - start) * snapLocation);
         }
@@ -83,12 +83,12 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     /**
      * Calculates the snapping location for the provided child.
      * @param child The child to calculate the snapping locations on.
+     * @param layoutManager The layout manager to do calculations with.
      * @param snapResult The array to save the result to.
      * @param direction The direction the calculations should be made in. DIRECTION_X, DIRECTION_Y.
      * @return snapResult.
      */
-    private float[] calculateChildSnapLocations(View child, float[] snapResult, int direction) {
-        final RecyclerView.LayoutManager layoutManager = getLayoutManager();
+    public float[] calculateChildSnapLocations(View child, LayoutManager layoutManager, float[] snapResult, int direction) {
         snapResult[0] = snapResult[1] = 0;
 
         if(layoutManager != null) {
@@ -115,12 +115,12 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
 
     /**
      * Calculates the start and end snapping positions of the parent RecyclerView.
+     * @param layoutManager The layout manager to do calculations with.
      * @param snapResult The array to save the result to.
      * @param direction The direction the calculations should be made in. DIRECTION_X, DIRECTION_Y.
      * @return snapResult.
      */
-    private float[] calculateParentSnapLocations(float[] snapResult, int direction) {
-        final RecyclerView.LayoutManager layoutManager = getLayoutManager();
+    public float[] calculateParentSnapLocations(LayoutManager layoutManager, float[] snapResult, int direction) {
         snapResult[0] = snapResult[1] = 0;
 
         if(layoutManager != null) {
@@ -145,19 +145,18 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
 
     /**
      * Calculates the snapping distance that should be scrolled, inorder to snap the child into place.
+     * @param layoutManager The layout manager to do calculations with.
      * @param child The child we are trying to snap into place.
      * @param direction The scrolling direction.
      * @return The distance that should be translated for a snap to occur.
      */
-    public int calculateSnappingDistance(View child, int direction) {
-        LayoutManager layoutManager = getLayoutManager();
-
+    public int calculateSnappingDistance(View child, LayoutManager layoutManager, int direction) {
         if(layoutManager != null) {
             if ((direction == DIRECTION_X && layoutManager.canScrollHorizontally()) ||
                     (direction == DIRECTION_Y && layoutManager.canScrollVertically())) {
                 // Calculate the true snapping positions.
-                float[] childSnap = calculateChildSnapLocations(child, new float[2], direction);
-                float[] parentSnap = calculateParentSnapLocations(new float[2], direction);
+                float[] childSnap = calculateChildSnapLocations(child, layoutManager, new float[2], direction);
+                float[] parentSnap = calculateParentSnapLocations(layoutManager, new float[2], direction);
 
                 // The calculated snap distances.
                 int[] snapDistance = {
@@ -211,8 +210,8 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
      */
     @Override
     protected void onTargetFound(View targetView, RecyclerView.State state, Action action) {
-        final int dx = calculateSnappingDistance(targetView, DIRECTION_X);
-        final int dy = calculateSnappingDistance(targetView, DIRECTION_Y);
+        final int dx = calculateSnappingDistance(targetView, getLayoutManager(), DIRECTION_X);
+        final int dy = calculateSnappingDistance(targetView, getLayoutManager(), DIRECTION_Y);
 
         if(dx != 0 || dy != 0) {
             mSnapStartTime = System.currentTimeMillis();
