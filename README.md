@@ -12,7 +12,22 @@ The snapping mechanism relies on RecyclerView's smooth scrolling capability. Whe
 - Ability to include margins in the snapping calculation
 - Ability to include decorations in the snapping calculation
 
-### Important classes
+### Example configured for center snapping
+```java
+  // Create an options object with a snap animation duration of 350ms, and snap points configured to the center of the screen
+  SnappingSmoothScroller.SnappingOptions options = new SnappingSmoothScroller.SnappingOptions();
+  
+  // In this case, 0.5f sets the snapping location to a percentage of the parent / children. Since both are set to 50%, the center
+  // of the child, will be snapped to the center of the parent. If a value greater than 1.0 is used here, it will be calculated
+  // as a pixel value. For example, setting the parent snap location to 150 would make the center of the child snap to 150px into
+  // the parent.
+  options.setChildSnappingLocation(0.5f);
+  options.setParentSnappingLocation(0.5f);
+  options.setSnapDuration(350);
+  
+  SnappingLinearLayoutManager layoutManager = new SnappingLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+  layoutManager.setSnappingOptions(mSnappingOptions);
+```
 ##### SnappingSmoothScroller
 Custom smooth scroller implementation, used internally by the layout manager extensions in order to provide the snapping behavior.
 
@@ -21,18 +36,6 @@ Options object for the snapping smoooth scroller, should be provided to the layo
 
 ##### SnappingLinearLayoutManager
 Extension of LinearLayoutManager which should be used in its place. The snapping options object can be passed in via the setSnappingOptions() method. 
-
-### Example configured for center snapping
-```java
-  // Create an options object with a snap animation duration of 350ms, and snap points configured to the center of the screen
-  SnappingSmoothScroller.SnappingOptions options = new SnappingSmoothScroller.SnappingOptions();
-  options.setChildSnappingLocation(0.5f);
-  options.setParentSnappingLocation(0.5f);
-  options.setSnapDuration(350);
-  
-  SnappingLinearLayoutManager layoutManager = new SnappingLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-  layoutManager.setSnappingOptions(mSnappingOptions);
-```
 
 ### Playground example application
 This project contains a playground application so that the different snapping configurations can be modified and viewed in real time. The opaque green / blue lines represent the parent's start / end snapping point. The transparent green / blue lines represent the child's start / end snapping point.
