@@ -47,12 +47,25 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
     private float mCalculatedMillisPerPx;
 
     /**
+     * The RecyclerView that is handling this smooth scroller.
+     */
+    private RecyclerView mRecyclerView;
+
+    /**
      * @param options The options used to calculate snapping points.
      * @param context The context in which this smooth scroller belongs to.
      */
     public SnappingSmoothScroller(SnappingOptions options, Context context) {
         super(context);
         setSnappingOptions(options, context);
+    }
+
+    /**
+     * @param recyclerView The RecyclerView associated with this snapper, for some additional
+     *                     calculations.
+     */
+    public void setRecyclerView(RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
     }
 
     /**
@@ -223,6 +236,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         return (int) Math.ceil(Math.abs(dx) * mCalculatedMillisPerPx);
     }
 
+
     /**
      * Overridden to snap into place using our options object.
      */
@@ -233,7 +247,12 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
 
         if(dx != 0 || dy != 0) {
             mSnapStartTime = System.currentTimeMillis();
-            action.update(-dx, -dy, mOptions.mSnapDuration, mOptions.mTargetFoundInterpolator);
+
+            if(mOptions.mSnapDuration > 0) {
+                action.update(-dx, -dy, mOptions.mSnapDuration, mOptions.mTargetFoundInterpolator);
+            } else if(mRecyclerView != null) {
+                mRecyclerView.scrollBy(-dx, -dy);
+            }
         }
     }
 
