@@ -233,7 +233,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
 
         if(dx != 0 || dy != 0) {
             mSnapStartTime = System.currentTimeMillis();
-            action.update(-dx, -dy, 500, mOptions.mTargetFoundInterpolator);
+            action.update(-dx, -dy, mOptions.mSnapDuration, mOptions.mTargetFoundInterpolator);
         }
     }
 
@@ -404,6 +404,13 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
          */
         public boolean getIncludeChildDecorations() {
             return mIncludeChildDecorations;
+        }
+
+        /**
+         * @return The amount of milliseconds it will take for an attached view to snap into place.
+         */
+        public int getSnapDuration() {
+            return mSnapDuration;
         }
     }
 }

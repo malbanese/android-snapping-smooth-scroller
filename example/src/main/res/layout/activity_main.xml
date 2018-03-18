@@ -8,8 +8,10 @@
         <variable name="childSecondSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
         <variable name="parentFirstSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
         <variable name="parentSecondSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="animationDuration" type="com.malba.sandbox.viewmodel.AnimationDurationViewModel"/>
         <variable name="useDecorations" type="com.malba.sandbox.viewmodel.InputToggleViewModel"/>
         <variable name="useMargins" type="com.malba.sandbox.viewmodel.InputToggleViewModel"/>
+        <variable name="toggleOrientation" type="com.malba.sandbox.viewmodel.InputToggleViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -26,28 +28,36 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <ScrollView
             android:id="@+id/options_menu"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:background="#e0303030"
-            android:elevation="3dp"
-            android:orientation="vertical"
-            app:layout_constraintRight_toLeftOf="parent">
-            <include layout="@layout/input_section_snapper"
-                app:input="@{childFirstSnap}"/>
-            <include layout="@layout/input_section_snapper"
-                app:input="@{childSecondSnap}"/>
-            <include layout="@layout/input_section_snapper"
-                app:input="@{parentFirstSnap}"/>
-            <include layout="@layout/input_section_snapper"
-                app:input="@{parentSecondSnap}"/>
-            <include layout="@layout/input_toggle"
-                app:input="@{useDecorations}"/>
-            <include layout="@layout/input_toggle"
-                app:input="@{useMargins}"/>
+            app:layout_constraintRight_toLeftOf="parent"
+            android:elevation="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/input_section_snapper"
+                    app:input="@{childFirstSnap}"/>
+                <include layout="@layout/input_section_snapper"
+                    app:input="@{childSecondSnap}"/>
+                <include layout="@layout/input_section_snapper"
+                    app:input="@{parentFirstSnap}"/>
+                <include layout="@layout/input_section_snapper"
+                    app:input="@{parentSecondSnap}"/>
+                <include layout="@layout/input_section_snapper"
+                    app:input="@{animationDuration}"/>
+                <include layout="@layout/input_toggle"
+                    app:input="@{useDecorations}"/>
+                <include layout="@layout/input_toggle"
+                    app:input="@{useMargins}"/>
+                <include layout="@layout/input_toggle"
+                    app:input="@{toggleOrientation}"/>
+            </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

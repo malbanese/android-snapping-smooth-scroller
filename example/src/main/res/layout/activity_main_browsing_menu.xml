@@ -15,10 +15,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/options_menu"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:background="#e0303030"
+        android:elevation="3dp"
         app:layout_constraintLeft_toLeftOf="parent"/>
 </android.support.constraint.ConstraintLayout>

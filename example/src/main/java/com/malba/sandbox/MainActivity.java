@@ -15,8 +15,10 @@ import android.view.View;
 import com.malba.sandbox.adapter.VerticalMovieAdapter;
 import com.malba.sandbox.databinding.ActivityMainBinding;
 import com.malba.sandbox.model.SimplePoster;
+import com.malba.sandbox.viewmodel.AnimationDurationViewModel;
 import com.malba.sandbox.viewmodel.ToggleDecorationsViewModel;
 import com.malba.sandbox.viewmodel.ToggleMarginViewModel;
+import com.malba.sandbox.viewmodel.ToggleOrientationViewModel;
 import com.malba.util.SnappingPreviewItemDecorator;
 import com.malba.sandbox.viewmodel.SnapFirstChildViewModel;
 import com.malba.sandbox.viewmodel.SnapSecondChildViewModel;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SnappingSmoothScroller.SnappingOptions mSnappingOptions;
 
+    private SnappingPreviewItemDecorator mSnappingDecorator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         mSnappingOptions = new SnappingSmoothScroller.SnappingOptions();
         SnappingLinearLayoutManager layoutManager = new SnappingLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
         layoutManager.setSnappingOptions(mSnappingOptions);
         recyclerView.setLayoutManager( layoutManager );
-        recyclerView.addItemDecoration( new SnappingPreviewItemDecorator(mSnappingOptions, this));
+
+        mSnappingDecorator = new SnappingPreviewItemDecorator(mSnappingOptions, this);
+        recyclerView.addItemDecoration(mSnappingDecorator);
+
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -66,13 +72,26 @@ public class MainActivity extends AppCompatActivity {
         mBinding.setChildSecondSnap( new SnapSecondChildViewModel(this, mSnappingOptions) );
         mBinding.setParentFirstSnap( new SnapFirstParentViewModel(this, mSnappingOptions) );
         mBinding.setParentSecondSnap( new SnapSecondParentViewModel(this, mSnappingOptions) );
+        mBinding.setAnimationDuration( new AnimationDurationViewModel(this, mSnappingOptions) );
         mBinding.setUseDecorations( new ToggleDecorationsViewModel(this, mSnappingOptions) );
         mBinding.setUseMargins( new ToggleMarginViewModel(this, mSnappingOptions) );
+        mBinding.setToggleOrientation( new ToggleOrientationViewModel(this) );
 
-        Observable.OnPropertyChangedCallback mPropertyListener = new Observable.OnPropertyChangedCallback() {
+        final Observable.OnPropertyChangedCallback mPropertyListener = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int property) {
                 mBinding.mainRecyclerView.invalidateItemDecorations();
+            }
+        };
+
+        final Observable.OnPropertyChangedCallback mOrientationListener = new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                int orientation = mBinding.getToggleOrientation().getValue() ? LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
+                SnappingLinearLayoutManager layoutManager = new SnappingLinearLayoutManager(MainActivity.this, orientation, false);
+                layoutManager.setSnappingOptions(mSnappingOptions);
+                mBinding.mainRecyclerView.setLayoutManager( layoutManager );
+                mSnappingDecorator.resetOrientation();
             }
         };
 
@@ -82,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.getParentSecondSnap().addOnPropertyChangedCallback(mPropertyListener);
         mBinding.getUseDecorations().addOnPropertyChangedCallback(mPropertyListener);
         mBinding.getUseMargins().addOnPropertyChangedCallback(mPropertyListener);
+        mBinding.getToggleOrientation().addOnPropertyChangedCallback(mOrientationListener);
     }
 
     public ArrayList<SimplePoster> getMockData(int count) {

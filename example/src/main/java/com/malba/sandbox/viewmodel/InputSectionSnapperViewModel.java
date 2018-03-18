@@ -6,6 +6,7 @@ import com.malba.sandbox.BR;
 
 public abstract class InputSectionSnapperViewModel extends BaseObservable {
     private String mTitle;
+    private int mMaxSliderValue = 100;
 
     /**
      * @param title The title to display for this text.
@@ -52,7 +53,14 @@ public abstract class InputSectionSnapperViewModel extends BaseObservable {
      * @param percent Sets the percent value.
      */
     public void setValuePercent(int percent) {
-        setValue(percent / 100f);
+        setValue((float) percent / mMaxSliderValue);
+    }
+
+    /**
+     * @param maxSliderValue The maximum slider value.
+     */
+    public void setMaxSliderValue(int maxSliderValue) {
+        mMaxSliderValue = maxSliderValue;
     }
 
     /**
@@ -60,7 +68,7 @@ public abstract class InputSectionSnapperViewModel extends BaseObservable {
      */
     @Bindable
     public int getValuePercent() {
-        return (int)(100 * getValue());
+        return (int)(mMaxSliderValue * getValue());
     }
 
     /**
@@ -69,5 +77,13 @@ public abstract class InputSectionSnapperViewModel extends BaseObservable {
     @Bindable
     public String getTitle() {
         return mTitle;
+    }
+
+    /**
+     * @return The maximum slider value
+     */
+    @Bindable
+    public int getMaxSliderValue() {
+        return mMaxSliderValue;
     }
 }

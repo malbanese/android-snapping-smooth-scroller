@@ -40,6 +40,13 @@ public class SnappingPreviewItemDecorator extends RecyclerView.ItemDecoration {
     private Paint mChildSecondaryPaint = new Paint();
 
     /**
+     * Resets the orientation to unknown. The orientation will be recalculated on the next draw pass.
+     */
+    public void resetOrientation() {
+        mOrientation = UNKNOWN_ORIENTATION;
+    }
+
+    /**
      * @param snappingOptions The snapping options to pull from, in order to draw the snapping lines.
      * @param context The context to setup the snapping smooth scroller with.
      */
