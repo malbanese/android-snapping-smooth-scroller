@@ -1,7 +1,5 @@
 An advanced implementation of the default RecyclerView smooth scroller that aids in
-positioning and scrolling to focused views.
-
-The snapping mechanism relies on RecyclerView's smooth scrolling capability. When a view gains focus, it will trigger a smooth scroll action within it's parent RecyclerView. 
+positioning and scrolling to focused views. The snapping mechanism relies on RecyclerView's smooth scrolling capability. When a view gains focus, it will trigger a smooth scroll action within it's parent RecyclerView. 
 
 ### Snapping Options
 - Snapping with percentage or pixel value
