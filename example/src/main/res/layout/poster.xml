@@ -24,10 +24,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{simplePoster.title}"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            android:alpha="0.85"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Poster" />
+            tools:text="10" />
     </android.support.constraint.ConstraintLayout>
 </layout>

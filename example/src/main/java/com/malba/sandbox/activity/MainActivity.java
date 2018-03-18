@@ -1,4 +1,4 @@
-package com.malba.sandbox;
+package com.malba.sandbox.activity;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
@@ -12,6 +12,7 @@ import android.transition.TransitionManager;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.malba.sandbox.R;
 import com.malba.sandbox.adapter.VerticalMovieAdapter;
 import com.malba.sandbox.databinding.ActivityMainBinding;
 import com.malba.sandbox.model.SimplePoster;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        final VerticalMovieAdapter adapter = new VerticalMovieAdapter( getMockData(25) );
+        final VerticalMovieAdapter adapter = new VerticalMovieAdapter( getMockData(999) );
         RecyclerView recyclerView = mBinding.mainRecyclerView;
         recyclerView.setAdapter(adapter);
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<SimplePoster> a_SimplePoster = new ArrayList<>(count);
 
         for(int i=0; i < count; i++) {
-            a_SimplePoster.add( new SimplePoster("Poster " + i) );
+            a_SimplePoster.add( new SimplePoster(String.valueOf(i)) );
         }
 
         return a_SimplePoster;
