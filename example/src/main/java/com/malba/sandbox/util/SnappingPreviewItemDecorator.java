@@ -62,9 +62,9 @@ public class SnappingPreviewItemDecorator extends RecyclerView.ItemDecoration {
             canvas.drawLine(mChildSnapLocation[0], parent.getTop(), mChildSnapLocation[0], parent.getBottom(), mChildPaint);
             canvas.drawLine(mChildSnapLocation[1], parent.getTop(), mChildSnapLocation[1], parent.getBottom(), mChildSecondaryPaint);
         } else {
-            mSnappingSmoothScroller.calculateChildSnapLocations(child, parent.getLayoutManager(), mChildSnapLocation, SnappingSmoothScroller.DIRECTION_X);
-            canvas.drawLine(mChildSnapLocation[0], parent.getTop(), mChildSnapLocation[0], parent.getBottom(), mChildPaint);
-            canvas.drawLine(mChildSnapLocation[1], parent.getTop(), mChildSnapLocation[1], parent.getBottom(), mChildSecondaryPaint);
+            mSnappingSmoothScroller.calculateChildSnapLocations(child, parent.getLayoutManager(), mChildSnapLocation, SnappingSmoothScroller.DIRECTION_Y);
+            canvas.drawLine(parent.getLeft(), mChildSnapLocation[0], parent.getRight(), mChildSnapLocation[0], mChildPaint);
+            canvas.drawLine(parent.getLeft(), mChildSnapLocation[1], parent.getRight(), mChildSnapLocation[1], mChildSecondaryPaint);
         }
     }
 

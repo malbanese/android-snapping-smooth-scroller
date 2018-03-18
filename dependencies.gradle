@@ -1,0 +1,16 @@
+ext {
+    supportLibrary = "27.1.0"
+    buildToolsVersion = "27.0.3"
+    compileSdkVersion = 26
+    minSdkVersion = 23
+    targetSdkVersion = 27
+
+    otherDependencies = [
+        constraintLayout: "com.android.support.constraint:constraint-layout:1.0.2"
+    ]
+
+    supportDependencies = [
+        recyclerView: "com.android.support:recyclerview-v7:${supportLibrary}",
+        appCompat: "com.android.support:appcompat-v7:${supportLibrary}"
+    ]
+}
