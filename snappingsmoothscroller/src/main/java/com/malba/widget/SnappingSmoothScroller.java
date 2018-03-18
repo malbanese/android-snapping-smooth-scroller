@@ -94,20 +94,38 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         if(layoutManager != null) {
             // Use the layout params to get additional measurement information
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            int start = 0, end = 0;
 
             if(direction == DIRECTION_X && layoutManager.canScrollHorizontally()) {
-                final int start = layoutManager.getDecoratedLeft(child) - params.leftMargin;
-                final int end = layoutManager.getDecoratedRight(child) + params.rightMargin;
-                snapResult[0] = calculateSnapLocation(start, end, mOptions.mChildSnap[0]);
-                snapResult[1] = calculateSnapLocation(start, end, mOptions.mChildSnap[1]);
+                if(mOptions.mIncludeChildDecorations) {
+                    start = layoutManager.getDecoratedLeft(child);
+                    end = layoutManager.getDecoratedRight(child);
+                } else {
+                    start = child.getLeft();
+                    end = child.getRight();
+                }
+
+                if(mOptions.mIncludeChildMargins) {
+                    start -= params.leftMargin;
+                    end += params.rightMargin;
+                }
+            } else if(direction == DIRECTION_Y && layoutManager.canScrollVertically()) {
+                if(mOptions.mIncludeChildDecorations) {
+                    start = layoutManager.getDecoratedTop(child);
+                    end = layoutManager.getDecoratedBottom(child);
+                } else {
+                    start = child.getTop();
+                    end = child.getBottom();
+                }
+
+                if(mOptions.mIncludeChildMargins) {
+                    start -= params.topMargin;
+                    end -= params.bottomMargin;
+                }
             }
 
-            if(direction == DIRECTION_Y && layoutManager.canScrollVertically()) {
-                final int start = layoutManager.getDecoratedTop(child) - params.topMargin;
-                final int end = layoutManager.getDecoratedBottom(child) + params.bottomMargin;
-                snapResult[0] = calculateSnapLocation(start, end, mOptions.mChildSnap[0]);
-                snapResult[1] = calculateSnapLocation(start, end, mOptions.mChildSnap[1]);
-            }
+            snapResult[0] = calculateSnapLocation(start, end, mOptions.mChildSnap[0]);
+            snapResult[1] = calculateSnapLocation(start, end, mOptions.mChildSnap[1]);
         }
 
         return snapResult;
@@ -254,6 +272,12 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         // The amount of time snapping a child in place will take.
         private int mSnapDuration = 500;
 
+        // If true, margins will be included in the snapping calculation.
+        private boolean mIncludeChildMargins = false;
+
+        // If true, decorations will be included in the snapping calculation.
+        private boolean mIncludeChildDecorations = false;
+
         /**
          * @param msPerInch The number of MS it will take to animate over one inch of screen space,
          *                  while seeking towards the view belonging to our scrolling position. Only
@@ -324,18 +348,30 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
             mSnapDuration = snapDuration;
         }
 
+        /**
+         * @return The parent's first snapping location.
+         */
         public float getParentFirstSnapLocation() {
             return mParentSnap[0];
         }
 
+        /**
+         * @return The parent's second snapping location.
+         */
         public float getParentSecondSnapLocation() {
             return mParentSnap[1];
         }
 
+        /**
+         * @return The child's first snapping location.
+         */
         public float getChildFirstSnapLocation() {
             return mChildSnap[0];
         }
 
+        /**
+         * @return The child's second snapping location.
+         */
         public float getChildSecondSnapLocation() {
             return mChildSnap[1];
         }

@@ -13,6 +13,7 @@
         android:layout_height="250dp"
         android:orientation="vertical"
         android:background="@drawable/focus_selector"
+        android:layout_marginRight="50dp"
         android:focusable="true">
 
         <TextView
