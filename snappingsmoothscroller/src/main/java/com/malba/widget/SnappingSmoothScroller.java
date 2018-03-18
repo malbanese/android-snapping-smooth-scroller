@@ -323,5 +323,21 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         public void setSnapDuration(int snapDuration) {
             mSnapDuration = snapDuration;
         }
+
+        public float getParentFirstSnapLocation() {
+            return mParentSnap[0];
+        }
+
+        public float getParentSecondSnapLocation() {
+            return mParentSnap[1];
+        }
+
+        public float getChildFirstSnapLocation() {
+            return mChildSnap[0];
+        }
+
+        public float getChildSecondSnapLocation() {
+            return mChildSnap[1];
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.malba.sandbox.R;
-import com.malba.sandbox.databinding.MoviePosterBinding;
+import com.malba.sandbox.databinding.PosterBinding;
 import com.malba.sandbox.model.SimplePoster;
 
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        MoviePosterBinding binding;
+        PosterBinding binding;
 
-        public ViewHolder(final MoviePosterBinding binding) {
+        public ViewHolder(final PosterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             this.binding.getRoot().setOnClickListener(new View.OnClickListener() {
@@ -48,9 +48,9 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MoviePosterBinding binding = DataBindingUtil.inflate(
+        PosterBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.movie_poster, parent,
+                R.layout.poster, parent,
                 false);
 
         return new ViewHolder(binding);

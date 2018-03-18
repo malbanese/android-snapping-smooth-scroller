@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sandbox</string>
+    <string name="child_first_snap_title">Child first snap</string>
+    <string name="child_second_snap_title">Child second snap</string>
+    <string name="parent_first_snap_title">Parent first snap</string>
+    <string name="parent_second_snap_title">Parent second snap</string>
 </resources>

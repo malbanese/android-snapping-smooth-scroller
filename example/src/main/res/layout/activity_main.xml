@@ -1,28 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.malba.sandbox.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mainRecyclerView"
+    <data>
+        <variable
+            name="childFirstSnap"
+            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable
+            name="childSecondSnap"
+            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable
+            name="parentFirstSnap"
+            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable
+            name="parentSecondSnap"
+            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/options_menu"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="#55000000"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mainRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/options_menu"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="#e0303030"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            app:layout_constraintRight_toLeftOf="parent">
+            <include layout="@layout/input_section_snapper"
+                app:input="@{childFirstSnap}"/>
+            <include layout="@layout/input_section_snapper"
+                app:input="@{childSecondSnap}"/>
+            <include layout="@layout/input_section_snapper"
+                app:input="@{parentFirstSnap}"/>
+            <include layout="@layout/input_section_snapper"
+                app:input="@{parentSecondSnap}"/>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
