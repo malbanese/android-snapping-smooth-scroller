@@ -349,6 +349,22 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
         }
 
         /**
+         * Sets whether or not this will use margins to calculate snap points with.
+         * @param includeChildMargins True if this should take margins into account.
+         */
+        public void setIncludeChildMargins(boolean includeChildMargins) {
+            mIncludeChildMargins = includeChildMargins;
+        }
+
+        /**
+         * Sets whether or not this will use decorations to calculate snap points with.
+         * @param includeChildDecorations True if this should take decorations into account.
+         */
+        public void setIncludeChildDecorations(boolean includeChildDecorations) {
+            mIncludeChildDecorations = includeChildDecorations;
+        }
+
+        /**
          * @return The parent's first snapping location.
          */
         public float getParentFirstSnapLocation() {
@@ -374,6 +390,20 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
          */
         public float getChildSecondSnapLocation() {
             return mChildSnap[1];
+        }
+
+        /**
+         * @return True if this calculates the snap point while including margins.
+         */
+        public boolean getIncludeChildMargins() {
+            return mIncludeChildMargins;
+        }
+
+        /**
+         * @return True if this calculates the snap point while including decorations.
+         */
+        public boolean getIncludeChildDecorations() {
+            return mIncludeChildDecorations;
         }
     }
 }

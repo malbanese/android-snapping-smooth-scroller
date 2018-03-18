@@ -15,11 +15,13 @@ import android.view.View;
 import com.malba.sandbox.adapter.VerticalMovieAdapter;
 import com.malba.sandbox.databinding.ActivityMainBinding;
 import com.malba.sandbox.model.SimplePoster;
+import com.malba.sandbox.viewmodel.ToggleDecorationsViewModel;
+import com.malba.sandbox.viewmodel.ToggleMarginViewModel;
 import com.malba.util.SnappingPreviewItemDecorator;
-import com.malba.sandbox.viewmodel.ChildFirstSnapViewModel;
-import com.malba.sandbox.viewmodel.ChildSecondSnapViewModel;
-import com.malba.sandbox.viewmodel.ParentFirstSnapViewModel;
-import com.malba.sandbox.viewmodel.ParentSecondSnapViewModel;
+import com.malba.sandbox.viewmodel.SnapFirstChildViewModel;
+import com.malba.sandbox.viewmodel.SnapSecondChildViewModel;
+import com.malba.sandbox.viewmodel.SnapFirstParentViewModel;
+import com.malba.sandbox.viewmodel.SnapSecondParentViewModel;
 import com.malba.widget.SnappingLinearLayoutManager;
 import com.malba.widget.SnappingSmoothScroller;
 
@@ -48,22 +50,24 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setSnappingOptions(mSnappingOptions);
         recyclerView.setLayoutManager( layoutManager );
         recyclerView.addItemDecoration( new SnappingPreviewItemDecorator(mSnappingOptions, this));
-//        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-//            @Override
-//            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-//                final int position = parent.getChildAdapterPosition(view);
-//                outRect.right = (position == adapter.getItemCount()) ? 0 : 150;
-//            }
-//        });
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                final int position = parent.getChildAdapterPosition(view);
+                outRect.right = (position == adapter.getItemCount()) ? 0 : 150;
+            }
+        });
 
         setupDataBinding();
     }
 
     private void setupDataBinding() {
-        mBinding.setChildFirstSnap( new ChildFirstSnapViewModel(this, mSnappingOptions) );
-        mBinding.setChildSecondSnap( new ChildSecondSnapViewModel(this, mSnappingOptions) );
-        mBinding.setParentFirstSnap( new ParentFirstSnapViewModel(this, mSnappingOptions) );
-        mBinding.setParentSecondSnap( new ParentSecondSnapViewModel(this, mSnappingOptions) );
+        mBinding.setChildFirstSnap( new SnapFirstChildViewModel(this, mSnappingOptions) );
+        mBinding.setChildSecondSnap( new SnapSecondChildViewModel(this, mSnappingOptions) );
+        mBinding.setParentFirstSnap( new SnapFirstParentViewModel(this, mSnappingOptions) );
+        mBinding.setParentSecondSnap( new SnapSecondParentViewModel(this, mSnappingOptions) );
+        mBinding.setUseDecorations( new ToggleDecorationsViewModel(this, mSnappingOptions) );
+        mBinding.setUseMargins( new ToggleMarginViewModel(this, mSnappingOptions) );
 
         Observable.OnPropertyChangedCallback mPropertyListener = new Observable.OnPropertyChangedCallback() {
             @Override
@@ -76,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
         mBinding.getChildSecondSnap().addOnPropertyChangedCallback(mPropertyListener);
         mBinding.getParentFirstSnap().addOnPropertyChangedCallback(mPropertyListener);
         mBinding.getParentSecondSnap().addOnPropertyChangedCallback(mPropertyListener);
-
+        mBinding.getUseDecorations().addOnPropertyChangedCallback(mPropertyListener);
+        mBinding.getUseMargins().addOnPropertyChangedCallback(mPropertyListener);
     }
 
     public ArrayList<SimplePoster> getMockData(int count) {

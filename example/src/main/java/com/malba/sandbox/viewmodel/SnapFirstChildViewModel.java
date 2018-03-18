@@ -8,10 +8,10 @@ import com.malba.widget.SnappingSmoothScroller;
 /**
  * Input section for the child first snap parameter.
  */
-public class ChildFirstSnapViewModel extends InputSectionSnapperViewModel {
+public class SnapFirstChildViewModel extends InputSectionSnapperViewModel {
     private SnappingSmoothScroller.SnappingOptions mOptions;
 
-    public ChildFirstSnapViewModel(Context context, SnappingSmoothScroller.SnappingOptions options) {
+    public SnapFirstChildViewModel(Context context, SnappingSmoothScroller.SnappingOptions options) {
         super(context.getResources().getString(R.string.child_first_snap_title));
         mOptions = options;
     }

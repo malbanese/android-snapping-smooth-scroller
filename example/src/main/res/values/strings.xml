@@ -4,4 +4,6 @@
     <string name="child_second_snap_title">Child second snap</string>
     <string name="parent_first_snap_title">Parent first snap</string>
     <string name="parent_second_snap_title">Parent second snap</string>
+    <string name="margin_toggle">Calculate with margin</string>
+    <string name="decoration_toggle">Calculate with decoration</string>
 </resources>

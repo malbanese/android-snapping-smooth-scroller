@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="childFirstSnap"
-            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
-        <variable
-            name="childSecondSnap"
-            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
-        <variable
-            name="parentFirstSnap"
-            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
-        <variable
-            name="parentSecondSnap"
-            type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="childFirstSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="childSecondSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="parentFirstSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="parentSecondSnap" type="com.malba.sandbox.viewmodel.InputSectionSnapperViewModel"/>
+        <variable name="useDecorations" type="com.malba.sandbox.viewmodel.InputToggleViewModel"/>
+        <variable name="useMargins" type="com.malba.sandbox.viewmodel.InputToggleViewModel"/>
     </data>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_root"
         android:layout_width="match_parent"
@@ -47,6 +42,10 @@
                 app:input="@{parentFirstSnap}"/>
             <include layout="@layout/input_section_snapper"
                 app:input="@{parentSecondSnap}"/>
+            <include layout="@layout/input_toggle"
+                app:input="@{useDecorations}"/>
+            <include layout="@layout/input_toggle"
+                app:input="@{useMargins}"/>
 
         </LinearLayout>
 
