@@ -10,9 +10,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 /**
- * This class aims to provide a more configurable version of the original LinearSmoothScroller.
- * The primary feature that differentiates it, is the ability to specify snapping points on both
- * the child, and the layout manager.
+ * This class aims to provide a more configurable version of the original
+ * {@link android.support.v7.widget.LinearSmoothScroller LinearSmoothScroller}.
+ * This version has the ability to specify various parameters that allow for more control
+ * over the smooth scroll. It also allows forsnapping points on both the child, and the layout
+ * manager.
  */
 @SuppressWarnings("WeakerAccess")
 public class SnappingSmoothScroller extends LinearSmoothScroller {
@@ -110,6 +112,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
             int start = 0, end = 0;
 
             if(direction == DIRECTION_X && layoutManager.canScrollHorizontally()) {
+                // Calculate differently if we are using decorations.
                 if(mOptions.mIncludeChildDecorations) {
                     start = layoutManager.getDecoratedLeft(child);
                     end = layoutManager.getDecoratedRight(child);
@@ -118,11 +121,13 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
                     end = child.getRight();
                 }
 
+                // Add the margins if we are including the margins.
                 if(mOptions.mIncludeChildMargins) {
                     start -= params.leftMargin;
                     end += params.rightMargin;
                 }
             } else if(direction == DIRECTION_Y && layoutManager.canScrollVertically()) {
+                // Calculate differently if we are using decorations.
                 if(mOptions.mIncludeChildDecorations) {
                     start = layoutManager.getDecoratedTop(child);
                     end = layoutManager.getDecoratedBottom(child);
@@ -131,6 +136,7 @@ public class SnappingSmoothScroller extends LinearSmoothScroller {
                     end = child.getBottom();
                 }
 
+                // Add the margins if we are including the margins.
                 if(mOptions.mIncludeChildMargins) {
                     start -= params.topMargin;
                     end -= params.bottomMargin;

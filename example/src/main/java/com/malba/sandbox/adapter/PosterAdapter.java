@@ -12,10 +12,10 @@ import com.malba.sandbox.model.SimplePoster;
 
 import java.util.ArrayList;
 
-public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdapter.ViewHolder> {
+public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.ViewHolder> {
     private ArrayList<SimplePoster> a_SimplePoster = new ArrayList<>();
 
-    public VerticalMovieAdapter(ArrayList<SimplePoster> a_SimplePoster) {
+    public PosterAdapter(ArrayList<SimplePoster> a_SimplePoster) {
         this.a_SimplePoster = a_SimplePoster;
     }
 
@@ -27,21 +27,15 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
         mRecyclerView = recyclerView;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         PosterBinding binding;
 
-        public ViewHolder(final PosterBinding binding) {
+        ViewHolder(final PosterBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            this.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mRecyclerView.smoothScrollToPosition(20);
-                }
-            });
         }
 
-        public void setMovie(SimplePoster simplePoster) {
+        void setMovie(SimplePoster simplePoster) {
             binding.setSimplePoster(simplePoster);
         }
     }
